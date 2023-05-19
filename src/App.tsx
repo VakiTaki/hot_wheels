@@ -22,6 +22,7 @@ function App() {
         </div>
       </header>
       <main className=" bg-slate-100 h-full overflow-scroll p-2">
+        <i className="fa-solid fa-user"></i>
         <Button />
         <Imput />
       </main>

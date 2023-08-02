@@ -1,17 +1,20 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+import { routes } from "../../routes";
 
 function Navigation() {
   return (
     <nav className="mx-auto flex max-w-7xl items-center justify-between">
-      <a href="/pl" className=" font-semibold leading-6 m-2">
-        Путевые листы
-      </a>
-      <a href="/repair" className="font-semibold leading-6  m-2">
-        Заявки на ремонт
-      </a>
-      <a href="/finace" className="font-semibold leading-6  m-2">
-        Финансы
-      </a>
+      {routes.map((route, ind) => {
+        if (route.display === true) {
+          return (
+            <NavLink to={route.path} key={ind} className="mx-3">
+              {route.title}
+            </NavLink>
+          );
+        }
+        return null;
+      })}
     </nav>
   );
 }

@@ -1,21 +1,14 @@
-import React, { useState } from "react";
-import InputField from "../common/input/inputField";
-import ButtonUI from "../common/button/buttonUI";
+import React, { useState, useEffect } from "react";
+import InputField from "../common/form/inputField";
+import ButtonUI from "../common/form/buttonUI";
 import { Link, useNavigate } from "react-router-dom";
-
-interface IErrors {
-  email?: string;
-  password?: string;
-}
-
-interface IData {
-  email: string;
-  password: string;
-}
-interface ITarget {
-  name: string;
-  value: string;
-}
+import {
+  IErrors,
+  ILoginData,
+  ITarget,
+} from "../../ts/interfaces/form.interfaces";
+import { validator } from "../../utils/validator";
+import _ from "lodash";
 
 const initialState = {
   email: "",
@@ -27,13 +20,18 @@ function LoginForm() {
   function handleRegister() {
     navigate("/register");
   }
-  const [data, setData] = useState<IData>(initialState);
+  const [data, setData] = useState<ILoginData>(initialState);
   const [errors, setErrors] = useState<IErrors>({});
+  console.log(errors);
   //   const history = useHistory();
   //   const { signIn } = useAuth();
-  //   useEffect(() => {
-  //       validate();
-  //   }, [data]);
+  useEffect(() => {
+    if (!_.isEqual(data, initialState)) {
+      validate();
+    } else {
+      setErrors({});
+    }
+  }, [data]);
   const handleChange = (target: ITarget) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }));
   };
@@ -62,29 +60,32 @@ function LoginForm() {
       },
     },
   };
-  //   const validate = () => {
-  //     const errors = validator(data, validatorConfig);
-  //     setErrors(errors);
-  //     return !Object.keys(errors).length;
-  //   };
-  const isValid = !Object.keys(errors).length;
+
+  const validate = () => {
+    const errors = validator(data, validatorConfig);
+    setErrors(errors);
+    return !Object.keys(errors).length;
+  };
+
+  const isValid = !Object.keys(errors).length && !_.isEqual(data, initialState);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(data);
-    //  const isValid = validate();
+
+    const isValid = validate();
+    console.log(isValid);
     //  if (!isValid) return;
     //  try {
     //    await signIn(data);
     //    history.push(
     //      history.location.state ? history.location.state.from.pathname : "/"
-    //    );
+    //    );s
     //  } catch (error) {
     //    setErrors(error);
     //  }
   };
 
   return (
-    <div className=" border-2 border-zinc-200 p-5 rounded-lg w-1/3">
+    <div className=" border-2 border-zinc-200 p-5 rounded-lg  w-80">
       <form onSubmit={handleSubmit}>
         <InputField
           label={"Email"}
@@ -102,10 +103,13 @@ function LoginForm() {
           error={errors.password || ""}
           placeholder="Пароль"
         />
-        <ButtonUI />
+        <ButtonUI disabled={!isValid} />
       </form>
       <div>
-        Нет аккаунта? <Link to="/registration">Зарегестрироваться</Link>
+        Нет аккаунта?{" "}
+        <Link className=" text-blue-500" to="/registration">
+          Зарегестрироваться
+        </Link>
       </div>
     </div>
   );

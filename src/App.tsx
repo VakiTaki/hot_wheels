@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div className="flex justify-center ">
-      <div className="flex flex-col h-screen w-3/4">
+      <div className="flex flex-col h-screen w-full  sm:w-10/12 lg:w-3/4">
         <header className=" flex jus bg-sky-400  h-20 rounded-b-lg">
           <div className="flex justify-between w-full items-center mx-5">
             <Link to="/" className="  font-bold text-3xl uppercase">

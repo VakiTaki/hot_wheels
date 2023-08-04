@@ -9,6 +9,12 @@ import {
 } from "../../ts/interfaces/form.interfaces";
 import { validator } from "../../utils/validator";
 import _ from "lodash";
+import { httpAuth } from "../../services/httpAuth.service";
+import { setTokens } from "../../services/localStorage.service";
+import { ILocalStorage } from "../../ts/interfaces/localStorage.interfaces";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { error } from "console";
 
 const initialState = {
   email: "",
@@ -70,19 +76,31 @@ function RegisterForm() {
     return !Object.keys(errors).length;
   };
   const isValid = !Object.keys(errors).length && !_.isEqual(data, initialState);
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  async function signUp({ email, password, ...rest }: IRegisterData) {
+    try {
+      const { data } = await httpAuth.post<ILocalStorage>("accounts:signUp", {
+        email,
+        password,
+        returnSecureToken: true,
+      });
+      setTokens(data);
+      return data;
+    } catch (error) {
+      let message;
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.data.error.message === "EMAIL_EXISTS")
+          message = "Такой email уже зарегестрирован";
+      } else message = String(error);
+      toast(message);
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(data);
-    //  const isValid = validate();
-    //  if (!isValid) return;
-    //  try {
-    //    await signIn(data);
-    //    history.push(
-    //      history.location.state ? history.location.state.from.pathname : "/"
-    //    );
-    //  } catch (error) {
-    //    setErrors(error);
-    //  }
+    try {
+      await signUp(data);
+    } catch (error) {}
   };
 
   return (

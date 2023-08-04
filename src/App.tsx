@@ -4,10 +4,11 @@ import { Routes, Route } from "react-router-dom";
 import { routes } from "./routes";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import LoginPage from "./components/pages/loginPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const [isLogin, setIsLogin] = useState<Boolean>(true);
+  const [isLogin, setIsLogin] = useState<Boolean>(false);
 
   return (
     <div className="flex justify-center ">
@@ -45,6 +46,7 @@ function App() {
           </p>{" "}
         </footer>
       </div>
+      <ToastContainer />
     </div>
   );
 }

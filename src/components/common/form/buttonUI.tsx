@@ -1,10 +1,10 @@
-import React from "react";
+import { FC } from "react";
 
 interface ButtonUIProps {
   disabled?: boolean;
 }
 
-function ButtonUI({ disabled }: ButtonUIProps) {
+const ButtonUI: FC<ButtonUIProps> = ({ disabled }) => {
   return (
     <>
       <button
@@ -15,6 +15,6 @@ function ButtonUI({ disabled }: ButtonUIProps) {
       </button>
     </>
   );
-}
+};
 
 export default ButtonUI;

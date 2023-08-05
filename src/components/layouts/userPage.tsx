@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 
-function UserPage() {
+const UserPage: FC = () => {
   return <div>UserPage</div>;
-}
+};
 
 export default UserPage;

@@ -1,6 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
+import { useDispatch } from "react-redux";
+import { removeUser } from "../../store/slices/userSlice";
 
-function UserHeader() {
+const UserHeader: FC = () => {
+  const dispatch = useDispatch();
+
   return (
     <div className="flex justify-center self-center">
       <div className="">
@@ -12,9 +16,14 @@ function UserHeader() {
       </div>
 
       <span className="inline-block text-white m-2">Ivan Ivanov</span>
-      <span className="inline-block text-white m-2">Exit</span>
+      <button
+        className="inline-block text-white m-2"
+        onClick={() => dispatch(removeUser())}
+      >
+        Exit
+      </button>
     </div>
   );
-}
+};
 
 export default UserHeader;

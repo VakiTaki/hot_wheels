@@ -1,9 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 import RegisterForm from "../UI/registerForm";
 
-type Props = {};
-
-const RegisterPage = (props: Props) => {
+const RegisterPage: FC = () => {
   return (
     <div className=" flex justify-center items-center mt-5  ">
       <RegisterForm />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { ITarget } from "../../../ts/interfaces/form.interfaces";
 
 interface InputFieldProps {
@@ -11,7 +11,7 @@ interface InputFieldProps {
   placeholder?: string;
 }
 
-function InputField({
+const InputField: FC<InputFieldProps> = ({
   label,
   type,
   name,
@@ -19,7 +19,7 @@ function InputField({
   onChange,
   error,
   placeholder,
-}: InputFieldProps) {
+}) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange({ name, value: e.target.value });
   };
@@ -46,6 +46,6 @@ function InputField({
       {error && <div className="invalid-feedback">{error}</div>}
     </div>
   );
-}
+};
 
 export default InputField;

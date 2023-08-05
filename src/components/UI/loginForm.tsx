@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import InputField from "../common/form/inputField";
 import ButtonUI from "../common/form/buttonUI";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,28 +9,31 @@ import {
 } from "../../ts/interfaces/form.interfaces";
 import { validator } from "../../utils/validator";
 import _ from "lodash";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { setTokens } from "../../services/localStorage.service";
+import { setUser } from "../../store/slices/userSlice";
+import { httpAuth } from "../../services/httpAuth.service";
+import { ILocalStorage } from "../../ts/interfaces/localStorage.interfaces";
+import { useDispatch } from "react-redux";
 
 const initialState = {
   email: "",
   password: "",
 };
 
-function LoginForm() {
+const LoginForm: FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  function handleRegister() {
-    navigate("/register");
-  }
   const [data, setData] = useState<ILoginData>(initialState);
   const [errors, setErrors] = useState<IErrors>({});
-  console.log(errors);
-  //   const history = useHistory();
-  //   const { signIn } = useAuth();
   useEffect(() => {
     if (!_.isEqual(data, initialState)) {
       validate();
     } else {
       setErrors({});
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   const handleChange = (target: ITarget) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }));
@@ -68,20 +71,35 @@ function LoginForm() {
   };
 
   const isValid = !Object.keys(errors).length && !_.isEqual(data, initialState);
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
 
-    const isValid = validate();
-    console.log(isValid);
-    //  if (!isValid) return;
-    //  try {
-    //    await signIn(data);
-    //    history.push(
-    //      history.location.state ? history.location.state.from.pathname : "/"
-    //    );s
-    //  } catch (error) {
-    //    setErrors(error);
-    //  }
+  async function signIn({ email, password, ...rest }: ILoginData) {
+    try {
+      const { data } = await httpAuth.post<ILocalStorage>(
+        "accounts:signInWithPassword",
+        {
+          email,
+          password,
+          returnSecureToken: true,
+        }
+      );
+      dispatch(setUser(data));
+      setTokens(data);
+      navigate("/");
+      return data;
+    } catch (error) {
+      console.log(error);
+      let message;
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.data.error.message === "EMAIL_EXISTS")
+          message = "Такой email уже зарегестрирован";
+      } else message = String(error);
+      toast(message);
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await signIn(data);
   };
 
   return (
@@ -113,6 +131,6 @@ function LoginForm() {
       </div>
     </div>
   );
-}
+};
 
 export default LoginForm;

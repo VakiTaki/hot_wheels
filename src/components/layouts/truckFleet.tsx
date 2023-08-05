@@ -1,7 +1,7 @@
-import React from "react";
+import { FC } from "react";
 
-function TruckFleet() {
+const TruckFleet: FC = () => {
   return <div>TruckFleet</div>;
-}
+};
 
 export default TruckFleet;

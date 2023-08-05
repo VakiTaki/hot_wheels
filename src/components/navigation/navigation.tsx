@@ -1,8 +1,8 @@
-import React from "react";
+import React, { FC } from "react";
 import { NavLink } from "react-router-dom";
 import { routes } from "../../routes";
 
-function Navigation() {
+const Navigation: FC = () => {
   return (
     <nav className="mx-auto flex max-w-7xl items-center justify-between">
       {routes.map((route, ind) => {
@@ -17,6 +17,6 @@ function Navigation() {
       })}
     </nav>
   );
-}
+};
 
 export default Navigation;

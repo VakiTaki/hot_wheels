@@ -1,9 +1,6 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { FC } from "react";
 
-type Props = {};
-
-const Login = (props: Props) => {
+const Login: FC = () => {
   return <div>Login</div>;
 };
 

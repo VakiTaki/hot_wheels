@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import InputField from "../common/form/inputField";
 import ButtonUI from "../common/form/buttonUI";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   IErrors,
   IRegisterData,
@@ -14,7 +14,8 @@ import { setTokens } from "../../services/localStorage.service";
 import { ILocalStorage } from "../../ts/interfaces/localStorage.interfaces";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { error } from "console";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/slices/userSlice";
 
 const initialState = {
   email: "",
@@ -22,17 +23,19 @@ const initialState = {
   name: "",
 };
 
-function RegisterForm() {
+const RegisterForm: FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [data, setData] = useState<IRegisterData>(initialState);
   const [errors, setErrors] = useState<IErrors>({});
-  //   const history = useHistory();
-  //   const { signIn } = useAuth();
+
   useEffect(() => {
     if (!_.isEqual(data, initialState)) {
       validate();
     } else {
       setErrors({});
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
   const handleChange = (target: ITarget) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }));
@@ -84,7 +87,9 @@ function RegisterForm() {
         password,
         returnSecureToken: true,
       });
+      dispatch(setUser(data));
       setTokens(data);
+      navigate("/");
       return data;
     } catch (error) {
       let message;
@@ -98,9 +103,7 @@ function RegisterForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      await signUp(data);
-    } catch (error) {}
+    await signUp(data);
   };
 
   return (
@@ -140,6 +143,6 @@ function RegisterForm() {
       </div>
     </div>
   );
-}
+};
 
 export default RegisterForm;

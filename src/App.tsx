@@ -2,14 +2,14 @@ import Navigation from "./components/navigation/navigation";
 import UserHeader from "./components/userHeader/userHeader";
 import { Routes, Route } from "react-router-dom";
 import { routes } from "./routes";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useAuth from "./hooks/useAuth";
+import { FC } from "react";
 
-function App() {
-  const [isLogin, setIsLogin] = useState<Boolean>(false);
-
+const App: FC = () => {
+  const { isAuth } = useAuth();
   return (
     <div className="flex justify-center ">
       <div className="flex flex-col h-screen w-full  sm:w-10/12 lg:w-3/4">
@@ -23,7 +23,7 @@ function App() {
               <Navigation />
             </div>
             <div className="self-center">
-              {isLogin ? <UserHeader /> : <Link to={"/login"}>Login</Link>}
+              {isAuth ? <UserHeader /> : <Link to={"/login"}>Login</Link>}
             </div>
           </div>
         </header>
@@ -49,6 +49,6 @@ function App() {
       <ToastContainer />
     </div>
   );
-}
+};
 
 export default App;

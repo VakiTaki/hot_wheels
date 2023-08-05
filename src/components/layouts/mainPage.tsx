@@ -1,22 +1,26 @@
-import React from "react";
+import React, { FC } from "react";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
-const MainPage: React.FC = () => {
+const MainPage: FC = () => {
+  const { isAuth } = useAuth();
   return (
     <section className=" flex justify-center">
       <section>
         <h1 className=" text-2xl text-center">
           Добро пожаловать в многофункциональный центр автопарка Hot Wheels
         </h1>
-        <section className="flex justify-center">
-          <Link className=" text-blue-500 text-center" to="/registration">
-            Зарегестрироваться
-          </Link>
-          |
-          <Link className=" text-blue-500 text-center" to="/login">
-            Войти
-          </Link>
-        </section>
+        {!isAuth && (
+          <section className="flex justify-center">
+            <Link className=" text-blue-500 text-center" to="/registration">
+              Зарегестрироваться
+            </Link>
+            |
+            <Link className=" text-blue-500 text-center" to="/login">
+              Войти
+            </Link>
+          </section>
+        )}
       </section>
     </section>
   );

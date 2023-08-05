@@ -9,13 +9,7 @@ import {
 } from "../../ts/interfaces/form.interfaces";
 import { validator } from "../../utils/validator";
 import _ from "lodash";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { setTokens } from "../../services/localStorage.service";
-import { setUser } from "../../store/slices/userSlice";
-import { httpAuth } from "../../services/httpAuth.service";
-import { ILocalStorage } from "../../ts/interfaces/localStorage.interfaces";
-import { useDispatch } from "react-redux";
+import useAuth from "../../hooks/useAuth";
 
 const initialState = {
   email: "",
@@ -23,8 +17,8 @@ const initialState = {
 };
 
 const LoginForm: FC = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { signIn } = useAuth();
   const [data, setData] = useState<ILoginData>(initialState);
   const [errors, setErrors] = useState<IErrors>({});
   useEffect(() => {
@@ -72,34 +66,9 @@ const LoginForm: FC = () => {
 
   const isValid = !Object.keys(errors).length && !_.isEqual(data, initialState);
 
-  async function signIn({ email, password, ...rest }: ILoginData) {
-    try {
-      const { data } = await httpAuth.post<ILocalStorage>(
-        "accounts:signInWithPassword",
-        {
-          email,
-          password,
-          returnSecureToken: true,
-        }
-      );
-      dispatch(setUser(data));
-      setTokens(data);
-      navigate("/");
-      return data;
-    } catch (error) {
-      console.log(error);
-      let message;
-      if (axios.isAxiosError(error) && error.response) {
-        if (error.response.data.error.message === "EMAIL_EXISTS")
-          message = "Такой email уже зарегестрирован";
-      } else message = String(error);
-      toast(message);
-    }
-  }
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await signIn(data);
+    signIn(data).then(() => navigate("/"));
   };
 
   return (

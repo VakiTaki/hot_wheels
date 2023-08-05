@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import { useDispatch } from "react-redux";
 import { removeUser } from "../../store/slices/userSlice";
+import { useAppDispatch } from "../../store/hooks";
 
 const UserHeader: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <div className="flex justify-center self-center">

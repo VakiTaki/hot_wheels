@@ -1,10 +1,20 @@
-export interface IData extends Partial<ILoginData>, Partial<IRegisterData> {}
+export interface IData
+  extends Partial<ILoginData>,
+    Partial<IRegisterData>,
+    Partial<IRegisterOrganizationData> {}
 
 export type IErrors = {
   [key in keyof IData]?: string;
 };
 
 export interface IRegisterData {
+  name: string;
+  email: string;
+  password: string;
+}
+export interface IRegisterOrganizationData {
+  organizationName: string;
+  address: string;
   name: string;
   email: string;
   password: string;

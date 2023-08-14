@@ -17,7 +17,7 @@ const initialState = {
   name: "",
 };
 
-const RegisterForm: FC = () => {
+const UserRegisterForm: FC = () => {
   const navigate = useNavigate();
   const { signUp } = useAuth();
   const [data, setData] = useState<IRegisterData>(initialState);
@@ -118,4 +118,4 @@ const RegisterForm: FC = () => {
   );
 };
 
-export default RegisterForm;
+export default UserRegisterForm;

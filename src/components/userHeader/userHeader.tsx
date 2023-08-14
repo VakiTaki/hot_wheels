@@ -1,9 +1,15 @@
 import React, { FC } from "react";
 import { removeUser } from "../../store/slices/userSlice";
 import { useAppDispatch } from "../../store/hooks";
+import localStorageServise from "../../services/localStorage.service";
 
 const UserHeader: FC = () => {
   const dispatch = useAppDispatch();
+
+  const removeAuth = () => {
+    dispatch(removeUser());
+    localStorageServise.removeAuthData();
+  };
 
   return (
     <div className="flex justify-center self-center">
@@ -18,7 +24,7 @@ const UserHeader: FC = () => {
       <span className="inline-block text-white m-2">Ivan Ivanov</span>
       <button
         className="inline-block text-white m-2"
-        onClick={() => dispatch(removeUser())}
+        onClick={() => removeAuth()}
       >
         Exit
       </button>

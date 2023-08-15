@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FC } from "react";
 import InputField from "../common/form/inputField";
 import ButtonUI from "../common/form/buttonUI";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   IErrors,
   IRegisterOrganizationData,
@@ -22,7 +22,6 @@ const initialState: IRegisterOrganizationData = {
 };
 
 const OrganizationRegisterForm: FC = () => {
-  const navigate = useNavigate();
   const { signUp, createUser } = useAuth();
   const { createOrganization, addOrganizationToList } = useOrganization();
   const [data, setData] = useState<IRegisterOrganizationData>(initialState);

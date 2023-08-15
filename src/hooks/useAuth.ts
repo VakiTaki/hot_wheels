@@ -6,7 +6,6 @@ import { httpAuth } from "../services/httpAuth.service";
 import { setTokens } from "../services/localStorage.service";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { FC } from "react";
 import usersService from "../services/user.service";
 
 const useAuth = () => {

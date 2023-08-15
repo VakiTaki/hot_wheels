@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../index";
 import { IOrganizationListItem } from "../../ts/interfaces/data.interfaces";
 
 interface IOrganizationStore {
@@ -25,7 +24,6 @@ const organizationListSlice = createSlice({
       state,
       action: PayloadAction<IOrganizationListItem[]>
     ) {
-      console.log(action.payload);
       state.entities = action.payload;
       state.isLoading = false;
       state.isDataLoaded = true;

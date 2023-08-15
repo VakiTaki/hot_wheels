@@ -4,10 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { IRegisterOrganizationData } from "../ts/interfaces/form.interfaces";
 import organizationService from "../services/organization.service";
-import {
-  IOrganizationData,
-  IOrganizationListItem,
-} from "../ts/interfaces/data.interfaces";
+import { IOrganizationListItem } from "../ts/interfaces/data.interfaces";
 import {
   organizationListFiled,
   organizationListReceved,

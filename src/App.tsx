@@ -6,10 +6,9 @@ import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAuth from "./hooks/useAuth";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import withRedux from "./hoc/withRedux";
 import withRouter from "./hoc/withRouter";
-import organizationService from "./services/organization.service";
 import AppLoader from "./hoc/appLoader";
 
 const App: FC = () => {

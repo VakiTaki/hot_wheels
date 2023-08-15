@@ -9,6 +9,7 @@ function AppLoader({ children }: IAppLoaderProps) {
   const { getOrganizationList } = useOrganization();
   useEffect(() => {
     getOrganizationList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return children;
 }

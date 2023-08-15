@@ -9,6 +9,7 @@ export type IErrors = {
 
 export interface IRegisterData {
   name: string;
+  phone: string;
   email: string;
   password: string;
 }
@@ -18,6 +19,7 @@ export interface IRegisterOrganizationData {
   name: string;
   email: string;
   password: string;
+  phone: string;
 }
 
 export interface ILoginData {

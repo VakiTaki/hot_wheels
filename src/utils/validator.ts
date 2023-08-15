@@ -4,7 +4,57 @@ import {
   IErrors,
   IData,
 } from "../ts/interfaces/form.interfaces";
-export function validator(data: IData, config: IValidatorConfig) {
+
+const config: IValidatorConfig = {
+  organizationName: {
+    isRequired: {
+      message: "Имя организации обязательно для заполнения",
+    },
+  },
+  address: {
+    isRequired: {
+      message: "Адрес обязателен для заполнения",
+    },
+  },
+  phone: {
+    isRequired: {
+      message: "Номер телефона обязателен для заполнения",
+    },
+  },
+  name: {
+    isRequired: {
+      message: "Имя обязательно для заполнения",
+    },
+    isName: {
+      message: "Имя должно быть формата 'Имя Фамилия (Отчество)'",
+    },
+  },
+  email: {
+    isRequired: {
+      message: "Электронная почта обязательна для заполнения",
+    },
+    isEmail: {
+      message: "Электронная почта введена некорректно",
+    },
+  },
+  password: {
+    isRequired: {
+      message: "Пароль обязателен для заполнения",
+    },
+    isCapitalSymbol: {
+      message: "Пароль должен содержать заглавную букву",
+    },
+    isContainDigit: {
+      message: "Пароль должен содержать цифру",
+    },
+    minLength: {
+      value: 8,
+      message: `Пароль cодержать минимум 8 символов`,
+    },
+  },
+};
+
+export function validator(data: IData) {
   const errors: IErrors = {};
   const validate = (
     validateMethod: string,

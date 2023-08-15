@@ -18,12 +18,13 @@ const initialState: IRegisterOrganizationData = {
   address: "",
   email: "",
   password: "",
+  phone: "+7",
 };
 
 const OrganizationRegisterForm: FC = () => {
   const navigate = useNavigate();
   const { signUp } = useAuth();
-  const { createOrganization } = useOrganization();
+  const { createOrganization, addOrganizationToList } = useOrganization();
   const [data, setData] = useState<IRegisterOrganizationData>(initialState);
   const [errors, setErrors] = useState<IErrors>({});
 
@@ -38,51 +39,8 @@ const OrganizationRegisterForm: FC = () => {
   const handleChange = (target: ITarget) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }));
   };
-  const validatorConfig = {
-    organizationName: {
-      isRequired: {
-        message: "Имя организации обязательно для заполнения",
-      },
-    },
-    address: {
-      isRequired: {
-        message: "Адрес обязателен для заполнения",
-      },
-    },
-    name: {
-      isRequired: {
-        message: "Имя обязательно для заполнения",
-      },
-      isName: {
-        message: "Имя должно быть формата 'Имя Фамилия (Отчество)'",
-      },
-    },
-    email: {
-      isRequired: {
-        message: "Электронная почта обязательна для заполнения",
-      },
-      isEmail: {
-        message: "Электронная почта введена некорректно",
-      },
-    },
-    password: {
-      isRequired: {
-        message: "Пароль обязателен для заполнения",
-      },
-      isCapitalSymbol: {
-        message: "Пароль должен содержать заглавную букву",
-      },
-      isContainDigit: {
-        message: "Пароль должен содержать цифру",
-      },
-      minLength: {
-        value: 8,
-        message: `Пароль cодержать минимум 8 символов`,
-      },
-    },
-  };
   const validate = () => {
-    const errors = validator(data, validatorConfig);
+    const errors = validator(data);
     setErrors(errors);
     return !Object.keys(errors).length;
   };
@@ -90,9 +48,15 @@ const OrganizationRegisterForm: FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { name, email, password } = data;
-    await signUp({ name, email, password });
-    await createOrganization(data);
+    const { name, email, password, phone } = data;
+    await signUp({ name, email, password, phone });
+    createOrganization(data).then((content) => {
+      if (content)
+        addOrganizationToList({
+          name: content?.organizationName,
+          _id: content?._id,
+        });
+    });
   };
 
   return (
@@ -121,6 +85,14 @@ const OrganizationRegisterForm: FC = () => {
           onChange={handleChange}
           error={errors.name || ""}
           placeholder="Имя"
+        />
+        <InputField
+          label={"Номер телефона"}
+          name="phone"
+          value={data.phone}
+          onChange={handleChange}
+          error={errors.phone || ""}
+          placeholder="Номер телефона"
         />
         <InputField
           label={"Email"}

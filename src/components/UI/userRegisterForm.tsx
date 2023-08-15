@@ -15,11 +15,12 @@ const initialState = {
   email: "",
   password: "",
   name: "",
+  phone: "+7",
 };
 
 const UserRegisterForm: FC = () => {
   const navigate = useNavigate();
-  const { signUp } = useAuth();
+  const { signUp, createUser } = useAuth();
   const [data, setData] = useState<IRegisterData>(initialState);
   const [errors, setErrors] = useState<IErrors>({});
 
@@ -34,41 +35,8 @@ const UserRegisterForm: FC = () => {
   const handleChange = (target: ITarget) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }));
   };
-  const validatorConfig = {
-    name: {
-      isRequired: {
-        message: "Имя обязательно для заполнения",
-      },
-      isName: {
-        message: "Имя должно быть формата 'Имя Фамилия (Отчество)'",
-      },
-    },
-    email: {
-      isRequired: {
-        message: "Электронная почта обязательна для заполнения",
-      },
-      isEmail: {
-        message: "Электронная почта введена некорректно",
-      },
-    },
-    password: {
-      isRequired: {
-        message: "Пароль обязателен для заполнения",
-      },
-      isCapitalSymbol: {
-        message: "Пароль должен содержать заглавную букву",
-      },
-      isContainDigit: {
-        message: "Пароль должен содержать цифру",
-      },
-      minLength: {
-        value: 8,
-        message: `Пароль cодержать минимум 8 символов`,
-      },
-    },
-  };
   const validate = () => {
-    const errors = validator(data, validatorConfig);
+    const errors = validator(data);
     setErrors(errors);
     return !Object.keys(errors).length;
   };
@@ -76,19 +44,29 @@ const UserRegisterForm: FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signUp(data).then(() => navigate("/"));
+    signUp(data).then((content) => {
+      if (content) createUser(data).then(() => navigate("/"));
+    });
   };
 
   return (
     <div className=" border-2 border-zinc-200 p-5 rounded-lg  w-80">
       <form onSubmit={handleSubmit}>
         <InputField
-          label={"Имя"}
+          label={"Фамилия и имя"}
           name="name"
           value={data.name}
           onChange={handleChange}
           error={errors.name || ""}
-          placeholder="Имя"
+          placeholder="Фамилия и имя"
+        />
+        <InputField
+          label={"Номер телефона"}
+          name="phone"
+          value={data.phone}
+          onChange={handleChange}
+          error={errors.phone || ""}
+          placeholder="Номер телефона"
         />
         <InputField
           label={"Email"}

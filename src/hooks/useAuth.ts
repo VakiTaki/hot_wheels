@@ -7,6 +7,7 @@ import { setTokens } from "../services/localStorage.service";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FC } from "react";
+import usersService from "../services/user.service";
 
 const useAuth = () => {
   const dispatch = useAppDispatch();
@@ -54,9 +55,18 @@ const useAuth = () => {
       toast(message);
     }
   }
+  const createUser = async (data: IRegisterData) => {
+    try {
+      const { content } = await usersService.create(data);
+      return content;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return {
     signIn,
     signUp,
+    createUser,
     isAuth: !!localId,
     refreshToken,
     idToken,

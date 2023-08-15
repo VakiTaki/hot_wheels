@@ -1,19 +1,18 @@
+import {
+  IOrganizationData,
+  IOrganizationListItem,
+} from "../ts/interfaces/data.interfaces";
 import { IRegisterOrganizationData } from "../ts/interfaces/form.interfaces";
 import httpService from "./http.service";
 import { nanoid } from "@reduxjs/toolkit";
 
 const organizationEndpoint = "organization/";
-const organizationListEndPoint = "organizationList";
+const organizationListEndPoint = "organizationList/";
 
 const organizationService = {
-  //   get: async () => {
-  //     const { data } = await httpService.get(organizationEndpoint);
-  //     return data;
-  //   },
-
   create: async (content: IRegisterOrganizationData) => {
     const id = nanoid();
-    const { data } = await httpService.put(
+    const { data } = await httpService.put<IOrganizationData>(
       organizationEndpoint + id + ".json",
       {
         ...content,
@@ -21,22 +20,14 @@ const organizationService = {
         role: "owner",
       }
     );
-    console.log(data);
-    await httpService.put(organizationListEndPoint + ".json", data);
     return data;
   },
-  //   getCurrentUser: async () => {
-  //     const { data } = await httpService.get(
-  //       organizationEndpoint + localStorageServise.getUserId()
-  //     );
-  //     return data;
-  //   },
-  //   editUser: async (content) => {
-  //     const { data } = await httpService.patch(
-  //       organizationEndpoint + localStorageServise.getUserId(),
-  //       content
-  //     );
-  //     return data;
-  //   },
+  addToList: async (content: IOrganizationListItem) => {
+    const { data } = await httpService.put(
+      organizationListEndPoint + content._id + ".json",
+      content
+    );
+    return data;
+  },
 };
 export default organizationService;

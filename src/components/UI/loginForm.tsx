@@ -32,34 +32,9 @@ const LoginForm: FC = () => {
   const handleChange = (target: ITarget) => {
     setData((prev) => ({ ...prev, [target.name]: target.value }));
   };
-  const validatorConfig = {
-    email: {
-      isRequired: {
-        message: "Электронная почта обязательна для заполнения",
-      },
-      isEmail: {
-        message: "Электронная почта введена некорректно",
-      },
-    },
-    password: {
-      isRequired: {
-        message: "Пароль обязателен для заполнения",
-      },
-      isCapitalSymbol: {
-        message: "Пароль должен содержать заглавную букву",
-      },
-      isContainDigit: {
-        message: "Пароль должен содержать цифру",
-      },
-      minLength: {
-        value: 8,
-        message: `Пароль cодержать минимум 8 символов`,
-      },
-    },
-  };
 
   const validate = () => {
-    const errors = validator(data, validatorConfig);
+    const errors = validator(data);
     setErrors(errors);
     return !Object.keys(errors).length;
   };

@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { IRegisterOrganizationData } from "../ts/interfaces/form.interfaces";
 import organizationService from "../services/organization.service";
 
-function useOrganization() {
+const useOrganization = () => {
   const dispatch = useAppDispatch();
   const { refreshToken, idToken, expiresIn, localId } =
     useAppSelector(selectUser);
@@ -32,6 +32,6 @@ function useOrganization() {
     expiresIn,
     localId,
   };
-}
+};
 
 export default useOrganization;

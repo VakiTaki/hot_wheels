@@ -7,6 +7,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAuth from "./hooks/useAuth";
 import { FC } from "react";
+import withRedux from "./hoc/withRedux";
+import withRouter from "./hoc/withRouter";
 
 const App: FC = () => {
   const { isAuth } = useAuth();
@@ -51,4 +53,5 @@ const App: FC = () => {
   );
 };
 
-export default App;
+const AppWithStoreAndRoutes = withRedux(withRouter(App));
+export default AppWithStoreAndRoutes;

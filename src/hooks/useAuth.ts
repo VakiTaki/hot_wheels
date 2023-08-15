@@ -6,8 +6,9 @@ import { httpAuth } from "../services/httpAuth.service";
 import { setTokens } from "../services/localStorage.service";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FC } from "react";
 
-function useAuth() {
+const useAuth = () => {
   const dispatch = useAppDispatch();
   const { refreshToken, idToken, expiresIn, localId } =
     useAppSelector(selectUser);
@@ -62,6 +63,6 @@ function useAuth() {
     expiresIn,
     localId,
   };
-}
+};
 
 export default useAuth;

@@ -12,11 +12,14 @@ const MainPage: FC = () => {
         </h1>
         {!isAuth && (
           <section className="flex justify-center">
-            <Link className=" text-blue-500 text-center" to="/registration">
+            <Link
+              className=" text-blue-500 text-center"
+              to="/auth/registration"
+            >
               Зарегестрироваться
             </Link>
             |
-            <Link className=" text-blue-500 text-center" to="/login">
+            <Link className=" text-blue-500 text-center" to="/auth/login">
               Войти
             </Link>
           </section>

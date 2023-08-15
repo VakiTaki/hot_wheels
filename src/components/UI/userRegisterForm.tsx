@@ -110,7 +110,7 @@ const UserRegisterForm: FC = () => {
       </form>
       <div>
         Есть аккаунт?{" "}
-        <Link className=" text-blue-500" to="/login">
+        <Link className=" text-blue-500" to="/auth/login">
           Вход
         </Link>
       </div>

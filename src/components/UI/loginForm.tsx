@@ -94,7 +94,7 @@ const LoginForm: FC = () => {
       </form>
       <div>
         Нет аккаунта?{" "}
-        <Link className=" text-blue-500" to="/registration">
+        <Link className=" text-blue-500" to="/auth/registration">
           Зарегестрироваться
         </Link>
       </div>

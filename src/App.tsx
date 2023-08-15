@@ -1,6 +1,6 @@
 import Navigation from "./components/navigation/navigation";
 import UserHeader from "./components/userHeader/userHeader";
-import { Routes, Route } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import { routes } from "./routes";
 import { Link } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -11,6 +11,7 @@ import withRedux from "./hoc/withRedux";
 import withRouter from "./hoc/withRouter";
 
 const App: FC = () => {
+  const appRoutes = useRoutes(routes);
   const { isAuth } = useAuth();
   return (
     <div className="flex justify-center ">
@@ -25,22 +26,12 @@ const App: FC = () => {
               <Navigation />
             </div>
             <div className="self-center">
-              {isAuth ? <UserHeader /> : <Link to={"/login"}>Login</Link>}
+              {isAuth ? <UserHeader /> : <Link to={"/auth/login"}>Login</Link>}
             </div>
           </div>
         </header>
         <main className=" bg-slate-100 h-full overflow-scroll p-2 rounded-lg my-2">
-          <Routes>
-            {routes.map((route, ind) => {
-              return (
-                <Route
-                  path={route.path + (route.params ? route.params : "")}
-                  element={route.element}
-                  key={ind}
-                />
-              );
-            })}
-          </Routes>
+          {appRoutes}
         </main>
         <footer className=" bg-sky-400 h-10 rounded-t-lg">
           <p className="mx-2 my-1 text-center text-myColor1">

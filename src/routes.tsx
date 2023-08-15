@@ -5,26 +5,44 @@ import RegisterPage from "./components/pages/registerPage";
 
 interface IRoute {
   path: string;
-  element: JSX.Element;
-  display: boolean;
-  title: string;
+  element?: JSX.Element;
+  display?: boolean;
+  title?: string;
   params?: string;
+  children?: any[];
 }
 
 export const routes: IRoute[] = [
-  { path: "/", element: <MainPage />, display: true, title: "Главная" },
+  { path: "", element: <MainPage />, display: true, title: "Главная" },
   {
-    path: "/finance",
+    path: "finance",
     params: "/:id?",
     element: <Finance />,
     display: true,
     title: "Финансы",
   },
-  { path: "/login", element: <LoginPage />, display: false, title: "Login" },
   {
-    path: "/registration",
-    element: <RegisterPage />,
-    display: false,
-    title: "Регистрация",
+    path: "auth",
+    children: [
+      {
+        path: "login",
+        element: <LoginPage />,
+        display: false,
+        title: "Login",
+      },
+      {
+        path: "registration",
+        element: <RegisterPage />,
+        display: false,
+        title: "Регистрация",
+      },
+    ],
   },
+  // { path: "/login", element: <LoginPage />, display: false, title: "Login" },
+  // {
+  //   path: "/registration",
+  //   element: <RegisterPage />,
+  //   display: false,
+  //   title: "Регистрация",
+  // },
 ];

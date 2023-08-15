@@ -23,11 +23,19 @@ const organizationService = {
     return data;
   },
   addToList: async (content: IOrganizationListItem) => {
-    const { data } = await httpService.put(
+    const { data } = await httpService.put<IOrganizationData>(
       organizationListEndPoint + content._id + ".json",
       content
+    );
+    console.log(data);
+    return data;
+  },
+  getList: async () => {
+    const { data } = await httpService.get<IOrganizationData[]>(
+      organizationListEndPoint + ".json"
     );
     return data;
   },
 };
+
 export default organizationService;

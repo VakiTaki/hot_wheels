@@ -1,0 +1,45 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../index";
+import { IOrganizationListItem } from "../../ts/interfaces/data.interfaces";
+
+interface IOrganizationStore {
+  entities: IOrganizationListItem[];
+  isLoading: boolean;
+  isDataLoaded: boolean;
+}
+
+const initialState: IOrganizationStore = {
+  entities: [],
+  isLoading: true,
+  isDataLoaded: false,
+};
+
+const organizationListSlice = createSlice({
+  name: "organizationList",
+  initialState,
+  reducers: {
+    organizationListRequested(state) {
+      state.isLoading = true;
+    },
+    organizationListReceved(
+      state,
+      action: PayloadAction<IOrganizationListItem[]>
+    ) {
+      console.log(action.payload);
+      state.entities = action.payload;
+      state.isLoading = false;
+      state.isDataLoaded = true;
+    },
+    organizationListFiled(state) {
+      state.isLoading = false;
+    },
+  },
+});
+
+export const {
+  organizationListRequested,
+  organizationListReceved,
+  organizationListFiled,
+} = organizationListSlice.actions;
+
+export default organizationListSlice.reducer;

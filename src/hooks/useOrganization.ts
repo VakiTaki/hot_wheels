@@ -8,6 +8,11 @@ import {
   IOrganizationData,
   IOrganizationListItem,
 } from "../ts/interfaces/data.interfaces";
+import {
+  organizationListFiled,
+  organizationListReceved,
+  organizationListRequested,
+} from "../store/slices/organizationListSlice";
 
 const useOrganization = () => {
   const dispatch = useAppDispatch();
@@ -39,9 +44,26 @@ const useOrganization = () => {
       toast(message);
     }
   }
+  async function getOrganizationList() {
+    dispatch(organizationListRequested());
+    try {
+      const data = await organizationService.getList();
+      dispatch(organizationListReceved(data));
+      return data;
+    } catch (error) {
+      dispatch(organizationListFiled());
+      let message;
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response.data.error.message === "EMAIL_EXISTS")
+          message = "Такой email уже зарегестрирован";
+      } else message = String(error);
+      toast(message);
+    }
+  }
   return {
     createOrganization,
     addOrganizationToList,
+    getOrganizationList,
     isAuth: !!localId,
     refreshToken,
     idToken,

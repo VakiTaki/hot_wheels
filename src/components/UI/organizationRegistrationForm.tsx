@@ -23,7 +23,7 @@ const initialState: IRegisterOrganizationData = {
 
 const OrganizationRegisterForm: FC = () => {
   const navigate = useNavigate();
-  const { signUp } = useAuth();
+  const { signUp, createUser } = useAuth();
   const { createOrganization, addOrganizationToList } = useOrganization();
   const [data, setData] = useState<IRegisterOrganizationData>(initialState);
   const [errors, setErrors] = useState<IErrors>({});
@@ -49,7 +49,9 @@ const OrganizationRegisterForm: FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { name, email, password, phone } = data;
-    await signUp({ name, email, password, phone });
+    signUp({ name, email, password, phone }).then((content) => {
+      if (content) createUser(data);
+    });
     createOrganization(data).then((content) => {
       if (content)
         addOrganizationToList({

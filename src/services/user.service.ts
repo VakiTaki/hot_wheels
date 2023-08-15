@@ -5,11 +5,6 @@ import { nanoid } from "@reduxjs/toolkit";
 const usersEndpoint = "users/";
 
 const usersService = {
-  //   get: async () => {
-  //     const { data } = await httpService.get(organizationEndpoint);
-  //     return data;
-  //   },
-
   create: async (content: IRegisterData) => {
     const id = nanoid();
     const { data } = await httpService.put(usersEndpoint + id + ".json", {

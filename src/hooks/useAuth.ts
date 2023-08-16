@@ -1,5 +1,4 @@
-import { selectUser, setUser } from "../store/slices/userSlice";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useAppDispatch } from "../store/hooks";
 import { ILoginData, IRegisterData } from "../ts/interfaces/form.interfaces";
 import { ILocalStorage } from "../ts/interfaces/localStorage.interfaces";
 import { httpAuth } from "../services/httpAuth.service";
@@ -7,12 +6,19 @@ import { setTokens } from "../services/localStorage.service";
 import axios from "axios";
 import { toast } from "react-toastify";
 import usersService from "../services/user.service";
+import {
+  authRequestFiled,
+  authRequestSuccess,
+  authRequested,
+  getIsLoogedIn,
+} from "../store/slices/userSlice";
+import { useSelector } from "react-redux";
 
 const useAuth = () => {
   const dispatch = useAppDispatch();
-  const { refreshToken, idToken, expiresIn, localId } =
-    useAppSelector(selectUser);
+  const isAuth = useSelector(getIsLoogedIn());
   async function signIn({ email, password, ...rest }: ILoginData) {
+    dispatch(authRequested());
     try {
       const { data } = await httpAuth.post<ILocalStorage>(
         "accounts:signInWithPassword",
@@ -22,10 +28,11 @@ const useAuth = () => {
           returnSecureToken: true,
         }
       );
-      dispatch(setUser(data));
+      dispatch(authRequestSuccess(data.localId));
       setTokens(data);
       return data;
     } catch (error) {
+      dispatch(authRequestFiled());
       console.log(error);
       let message;
       if (axios.isAxiosError(error) && error.response) {
@@ -36,13 +43,14 @@ const useAuth = () => {
     }
   }
   async function signUp({ email, password, ...rest }: IRegisterData) {
+    dispatch(authRequested());
     try {
       const { data } = await httpAuth.post<ILocalStorage>("accounts:signUp", {
         email,
         password,
         returnSecureToken: true,
       });
-      dispatch(setUser(data));
+      dispatch(authRequestSuccess(data.localId));
       setTokens(data);
       return data;
     } catch (error) {
@@ -66,11 +74,7 @@ const useAuth = () => {
     signIn,
     signUp,
     createUser,
-    isAuth: !!localId,
-    refreshToken,
-    idToken,
-    expiresIn,
-    localId,
+    isAuth,
   };
 };
 

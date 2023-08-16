@@ -1,35 +1,67 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../index";
-import { ILocalStorage } from "../../ts/interfaces/localStorage.interfaces";
+import { IUserData } from "../../ts/interfaces/data.interfaces";
+import localStorageServise from "../../services/localStorage.service";
 
-const initialState: ILocalStorage = {
-  refreshToken: "",
-  idToken: "",
-  expiresIn: "",
-  localId: "",
-};
+interface IUserStore {
+  entities: IUserData[];
+  isLoading: boolean;
+  isDataLoaded: boolean;
+  authId: string | null;
+  isLoggedIn: boolean;
+  isLoadingAuth: boolean;
+}
+
+const initialState: IUserStore = localStorageServise.getUserId()
+  ? {
+      entities: [],
+      isLoading: true,
+      isDataLoaded: false,
+      authId: null,
+      isLoggedIn: true,
+      isLoadingAuth: true,
+    }
+  : {
+      entities: [],
+      isLoading: true,
+      isDataLoaded: false,
+      authId: null,
+      isLoggedIn: false,
+      isLoadingAuth: true,
+    };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser(state, action: PayloadAction<ILocalStorage>) {
-      state.refreshToken = action.payload.refreshToken;
-      state.idToken = action.payload.idToken;
-      state.expiresIn = action.payload.expiresIn;
-      state.localId = action.payload.localId;
+    authRequested(state) {
+      state.isLoadingAuth = true;
     },
-    removeUser(state) {
-      state.refreshToken = initialState.refreshToken;
-      state.idToken = initialState.idToken;
-      state.expiresIn = initialState.expiresIn;
-      state.localId = initialState.localId;
+    authRequestSuccess(state, action: PayloadAction<string>) {
+      state.authId = action.payload;
+      state.isLoadingAuth = false;
+      state.isLoggedIn = true;
     },
+    authRequestFiled(state) {
+      state.isLoggedIn = false;
+      state.isLoadingAuth = false;
+    },
+    getUsers(state, action: PayloadAction<IUserData[]>) {
+      state.entities = action.payload;
+    },
+    removeUser(state) {},
   },
 });
 
-export const { setUser, removeUser } = userSlice.actions;
+export const {
+  getUsers,
+  removeUser,
+  authRequested,
+  authRequestSuccess,
+  authRequestFiled,
+} = userSlice.actions;
 
-export const selectUser = (state: RootState) => state.user;
+// export const selectUser = (state: RootState) => state.user.entities;
+export const getIsLoogedIn = () => (state: RootState) => state.user.isLoggedIn;
 
 export default userSlice.reducer;

@@ -1,5 +1,4 @@
-import { selectUser } from "../store/slices/userSlice";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useAppDispatch } from "../store/hooks";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { IRegisterOrganizationData } from "../ts/interfaces/form.interfaces";
@@ -13,8 +12,6 @@ import {
 
 const useOrganization = () => {
   const dispatch = useAppDispatch();
-  const { refreshToken, idToken, expiresIn, localId } =
-    useAppSelector(selectUser);
   async function createOrganization(content: IRegisterOrganizationData) {
     try {
       const data = await organizationService.create(content);
@@ -61,11 +58,6 @@ const useOrganization = () => {
     createOrganization,
     addOrganizationToList,
     getOrganizationList,
-    isAuth: !!localId,
-    refreshToken,
-    idToken,
-    expiresIn,
-    localId,
   };
 };
 

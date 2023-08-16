@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IOrganizationListItem } from "../../ts/interfaces/data.interfaces";
+import { RootState } from "..";
 
 interface IOrganizationStore {
   entities: IOrganizationListItem[];
@@ -39,5 +40,8 @@ export const {
   organizationListReceved,
   organizationListFiled,
 } = organizationListSlice.actions;
+
+export const getOrganizationList = () => (state: RootState) =>
+  state.organizationList.entities;
 
 export default organizationListSlice.reducer;

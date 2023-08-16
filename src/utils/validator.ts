@@ -11,6 +11,11 @@ const config: IValidatorConfig = {
       message: "Имя организации обязательно для заполнения",
     },
   },
+  organization: {
+    isRequired: {
+      message: "Укажите организацию",
+    },
+  },
   address: {
     isRequired: {
       message: "Адрес обязателен для заполнения",

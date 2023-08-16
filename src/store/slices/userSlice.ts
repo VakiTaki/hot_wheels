@@ -61,7 +61,6 @@ export const {
   authRequestFiled,
 } = userSlice.actions;
 
-// export const selectUser = (state: RootState) => state.user.entities;
 export const getIsLoogedIn = () => (state: RootState) => state.user.isLoggedIn;
 
 export default userSlice.reducer;

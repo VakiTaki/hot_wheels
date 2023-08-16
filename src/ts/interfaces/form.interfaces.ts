@@ -12,6 +12,7 @@ export interface IRegisterData {
   phone: string;
   email: string;
   password: string;
+  organization: string;
 }
 export interface IRegisterOrganizationData {
   organizationName: string;
@@ -41,4 +42,9 @@ export interface IValidatorConfig {
   [key: string]: {
     [key: string]: IErrorForm;
   };
+}
+
+export interface IOptionsArray {
+  value: string;
+  label: string;
 }

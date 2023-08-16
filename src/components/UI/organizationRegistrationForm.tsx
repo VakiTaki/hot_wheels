@@ -48,9 +48,9 @@ const OrganizationRegisterForm: FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { name, email, password, phone } = data;
-    signUp({ name, email, password, phone }).then((content) => {
-      if (content) createUser(data);
-    });
+    // signUp({ name, email, password, phone }).then((content) => {
+    //   if (content) createUser(data);
+    // });
     createOrganization(data).then((content) => {
       if (content)
         addOrganizationToList({

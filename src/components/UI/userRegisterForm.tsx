@@ -4,18 +4,24 @@ import ButtonUI from "../common/form/buttonUI";
 import { Link, useNavigate } from "react-router-dom";
 import {
   IErrors,
+  IOptionsArray,
   IRegisterData,
   ITarget,
 } from "../../ts/interfaces/form.interfaces";
 import { validator } from "../../utils/validator";
 import _ from "lodash";
 import useAuth from "../../hooks/useAuth";
+import SelectField from "../common/form/selectField";
+import { useAppSelector } from "../../store/hooks";
+import { getOrganizationList } from "../../store/slices/organizationListSlice";
+import MyListbox from "../common/form/costumSelect";
 
 const initialState = {
   email: "",
   password: "",
   name: "",
   phone: "+7",
+  organization: "",
 };
 
 const UserRegisterForm: FC = () => {
@@ -23,7 +29,11 @@ const UserRegisterForm: FC = () => {
   const { signUp, createUser } = useAuth();
   const [data, setData] = useState<IRegisterData>(initialState);
   const [errors, setErrors] = useState<IErrors>({});
-
+  const organizationList = useAppSelector(getOrganizationList());
+  const arrayOptions: IOptionsArray[] = organizationList.map((option) => ({
+    label: option.name,
+    value: option._id,
+  }));
   useEffect(() => {
     if (!_.isEqual(data, initialState)) {
       validate();
@@ -84,6 +94,16 @@ const UserRegisterForm: FC = () => {
           error={errors.password || ""}
           placeholder="Пароль"
         />
+        <SelectField
+          label="Организация"
+          name="organization"
+          value={data.organization}
+          options={arrayOptions}
+          defaultOption="Выбрать..."
+          error={errors.organization || ""}
+          onChange={handleChange}
+        />
+        <MyListbox />
         <ButtonUI disabled={!isValid} />
       </form>
       <div>
